@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Quote Maker & API Studio</title>
+    <meta
+      name="description"
+      content="Create beautiful Telegram fake chat quotes, stories, and stickers with instant live preview and high-performance API backend."
+    />
+    <meta name="keywords" content="telegram quote generator, fake chat maker, quotly api, telegram sticker quote, quote maker web" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles/base.css" />
+    <link rel="stylesheet" href="./src/styles/components.css" />
+    <link rel="stylesheet" href="./src/styles/preview.css" />
+  </head>
+  <body>
+    <div id="app" class="app-layout">
+      <!-- Top Navbar -->
+      <header class="navbar">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <path d="M8 10h.01"></path>
+              <path d="M12 10h.01"></path>
+              <path d="M16 10h.01"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="brand-title">Quote Studio</h1>
+            <p class="brand-sub">Telegram Quote Generator & API</p>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <div id="apiStatusBadge" class="status-badge checking">
+            <span class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a
+            href="https://huggingface.co/spaces/ilhamdev/quote-api"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="nav-link-btn"
+            title="Hugging Face Space Backend"
+          >
+            <span>HF Space</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Studio Grid -->
+      <main class="studio-container">
+        <!-- Left: Form Controls Panel -->
+        <section class="panel editor-panel" aria-labelledby="editorHeading">
+          <div class="panel-header">
+            <h2 id="editorHeading" class="panel-title">Quote Customizer</h2>
+            <button id="resetFormBtn" type="button" class="btn-text" title="Reset form to default values">Reset</button>
+          </div>
+
+          <form id="quoteForm" class="editor-form" autocomplete="off">
+            <!-- Section: Sender Info -->
+            <fieldset class="form-section">
+              <legend class="section-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Sender Information
+              </legend>
+
+              <div class="form-row">
+                <div class="form-group flex-2">
+                  <label for="senderName">Sender Name <span class="required">*</span></label>
+                  <input
+                    type="text"
+                    id="senderName"
+                    name="senderName"
+                    class="form-input"
+                    value="Mang Rusdi"
+                    placeholder="e.g. Rusdi Ilham"
+                    required
+                  />
+                </div>
+                <div class="form-group flex-1">
+                  <label for="senderTitle">Role / Tag</label>
+                  <input
+                    type="text"
+                    id="senderTitle"
+                    name="senderTitle"
+                    class="form-input"
+                    value="Owner"
+                    placeholder="e.g. Admin"
+                  />
+                </div>
+              </div>
+
+              <!-- Avatar Management -->
+              <div class="form-group">
+                <label>Avatar Photo</label>
+                <div class="avatar-tabs">
+                  <div class="avatar-input-wrapper">
+                    <input
+                      type="url"
+                      id="avatarUrl"
+                      name="avatarUrl"
+                      class="form-input"
+                      value="https://avatars.githubusercontent.com/u/108991206?v=4"
+                      placeholder="Paste image URL (https://...)"
+                    />
+                    <label for="avatarUploadInput" class="upload-btn" title="Upload image from computer">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                      <span>Upload</span>
+                    </label>
+                    <input type="file" id="avatarUploadInput" accept="image/*" class="file-hidden" />
+                  </div>
+                </div>
+                <div class="avatar-quick-pick">
+                  <span class="quick-pick-label">Presets:</span>
+                  <button type="button" class="preset-avatar-btn" data-url="https://avatars.githubusercontent.com/u/108991206?v=4">Rusdi</button>
+                  <button type="button" class="preset-avatar-btn" data-url="https://api.dicebear.com/7.x/bottts/svg?seed=Telegram">Bot</button>
+                  <button type="button" class="preset-avatar-btn" data-url="https://api.dicebear.com/7.x/notionists/svg?seed=Felix">Alex</button>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Section: Message Content -->
+            <fieldset class="form-section">
+              <legend class="section-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Message Content
+              </legend>
+
+              <div class="form-group">
+                <label for="messageText">Chat Text <span class="required">*</span></label>
+                <textarea
+                  id="messageText"
+                  name="messageText"
+                  class="form-textarea"
+                  rows="3"
+                  placeholder="Type Telegram message..."
+                  required
+                >Halo semuanya! Quote API Telegram sekarang sudah live dan siap digunakan 🚀</textarea>
+              </div>
+
+              <!-- Reply Quote Switch -->
+              <div class="toggle-group">
+                <label class="switch-container">
+                  <input type="checkbox" id="replyToggle" class="switch-input" checked />
+                  <span class="switch-slider"></span>
+                  <span class="switch-label">Include Quoted Reply</span>
+                </label>
+              </div>
+
+              <div id="replyFields" class="nested-fields">
+                <div class="form-group">
+                  <label for="replyName">Reply To (User)</label>
+                  <input
+                    type="text"
+                    id="replyName"
+                    class="form-input"
+                    value="Dika Ardnt"
+                    placeholder="Quoted user name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="replyText">Quoted Message</label>
+                  <input
+                    type="text"
+                    id="replyText"
+                    class="form-input"
+                    value="Kapan Quote API selesai dideploy?"
+                    placeholder="Quoted text preview"
+                  />
+                </div>
+              </div>
+
+              <!-- Media Attachment Switch -->
+              <div class="toggle-group">
+                <label class="switch-container">
+                  <input type="checkbox" id="mediaToggle" class="switch-input" />
+                  <span class="switch-slider"></span>
+                  <span class="switch-label">Include Attachment Image</span>
+                </label>
+              </div>
+
+              <div id="mediaFields" class="nested-fields hidden">
+                <div class="form-group">
+                  <label for="mediaUrl">Media Image URL</label>
+                  <input
+                    type="url"
+                    id="mediaUrl"
+                    class="form-input"
+                    placeholder="https://example.com/photo.jpg"
+                  />
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Section: Output & Styling -->
+            <fieldset class="form-section">
+              <legend class="section-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m4.93 4.93 4.24 4.24"></path>
+                  <path d="m14.83 9.17 4.24-4.24"></path>
+                  <path d="m14.83 14.83 4.24 4.24"></path>
+                  <path d="m9.17 14.83-4.24 4.24"></path>
+                </svg>
+                Output Style & Layout
+              </legend>
+
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="quoteType">Format Type</label>
+                  <select id="quoteType" class="form-select">
+                    <option value="quote" selected>Quote Bubble (Sticker)</option>
+                    <option value="stories">Stories (9:16 Vertical)</option>
+                    <option value="image">Image Card (Canvas)</option>
+                  </select>
+                </div>
+
+                <div class="form-group flex-1">
+                  <label for="imageFormat">File Format</label>
+                  <select id="imageFormat" class="form-select">
+                    <option value="png" selected>PNG (Lossless)</option>
+                    <option value="webp">WebP (Compact)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="bgColor">Background Color</label>
+                  <div class="color-picker-row">
+                    <input type="color" id="bgColor" class="color-swatch" value="#1b1e23" />
+                    <input type="text" id="bgColorText" class="form-input hex-input" value="#1b1e23" />
+                  </div>
+                </div>
+
+                <div class="form-group flex-1" id="watermarkGroup">
+                  <label for="watermark">Watermark (Stories/Image)</label>
+                  <input
+                    type="text"
+                    id="watermark"
+                    class="form-input"
+                    value="qc.mangrusdi.my.id"
+                    placeholder="Watermark text"
+                  />
+                </div>
+              </div>
+
+              <!-- Color Palette Quick Pick -->
+              <div class="palette-group">
+                <span class="quick-pick-label">Telegram Themes:</span>
+                <button type="button" class="palette-btn" data-color="#1b1e23" style="background: #1b1e23" title="Dark Slate"></button>
+                <button type="button" class="palette-btn" data-color="#0f172a" style="background: #0f172a" title="Midnight"></button>
+                <button type="button" class="palette-btn" data-color="#182533" style="background: #182533" title="Telegram Dark"></button>
+                <button type="button" class="palette-btn" data-color="#212d3b" style="background: #212d3b" title="Telegram Blue"></button>
+                <button type="button" class="palette-btn" data-color="#2d132c" style="background: #2d132c" title="Deep Plum"></button>
+                <button type="button" class="palette-btn" data-color="#172e27" style="background: #172e27" title="Forest Dark"></button>
+              </div>
+            </fieldset>
+
+            <!-- Generate Action Button -->
+            <div class="form-actions">
+              <button id="generateBtn" type="button" class="btn-primary">
+                <span class="btn-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </span>
+                <span class="btn-text-label">Generate Quote Image</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Right: Live Preview & Result Panel -->
+        <section class="panel preview-panel" aria-labelledby="previewHeading">
+          <div class="panel-header">
+            <h2 id="previewHeading" class="panel-title">Interactive Live Preview</h2>
+            <div class="preview-mode-tag" id="previewModeTag">Quote Mode</div>
+          </div>
+
+          <!-- Telegram Bubble Simulated Preview Box -->
+          <div class="preview-stage-container" id="previewStage">
+            <div class="telegram-quote-card" id="simulatedBubble">
+              <div class="tg-avatar-col">
+                <img id="prevAvatar" src="https://avatars.githubusercontent.com/u/108991206?v=4" alt="Avatar" class="tg-avatar" />
+              </div>
+              <div class="tg-bubble-col">
+                <div class="tg-bubble-header">
+                  <span id="prevSenderName" class="tg-sender-name">Mang Rusdi</span>
+                  <span id="prevSenderTitle" class="tg-sender-badge">Owner</span>
+                </div>
+
+                <!-- Quoted Reply Area in Bubble -->
+                <div id="prevReplyBox" class="tg-reply-box">
+                  <div class="tg-reply-line"></div>
+                  <div class="tg-reply-content">
+                    <div id="prevReplyName" class="tg-reply-name">Dika Ardnt</div>
+                    <div id="prevReplyText" class="tg-reply-text">Kapan Quote API selesai dideploy?</div>
+                  </div>
+                </div>
+
+                <!-- Media Preview in Bubble -->
+                <div id="prevMediaBox" class="tg-media-box hidden">
+                  <img id="prevMediaImg" src="" alt="Attached media" class="tg-media-img" />
+                </div>
+
+                <!-- Main Message Text -->
+                <div id="prevMessageText" class="tg-message-text">Halo semuanya! Quote API Telegram sekarang sudah live dan siap digunakan 🚀</div>
+
+                <!-- Message Meta Footer -->
+                <div class="tg-message-meta">
+                  <span class="tg-timestamp" id="prevTimestamp">21:30</span>
+                  <svg class="tg-checks" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real Server Generated Result Container -->
+          <div id="generatedResultBox" class="generated-box hidden">
+            <div class="result-header">
+              <span class="result-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Rendered by Hugging Face API
+              </span>
+              <div class="result-info" id="resultMeta">PNG • 512x360</div>
+            </div>
+
+            <div class="result-preview-image-wrap">
+              <img id="renderedImage" src="" alt="Rendered Quote" class="rendered-image" />
+            </div>
+
+            <div class="result-actions">
+              <a id="downloadBtn" href="#" download="telegram-quote.png" class="btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Image
+              </a>
+              <button id="copyImageBtn" type="button" class="btn-outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy to Clipboard
+              </button>
+            </div>
+          </div>
+
+          <!-- Developer API Integration Drawer -->
+          <div class="api-playground-box">
+            <div class="playground-header">
+              <span class="playground-title">Developer Integration Snippet</span>
+              <div class="tab-buttons">
+                <button type="button" class="tab-btn active" data-tab="curl">cURL</button>
+                <button type="button" class="tab-btn" data-tab="js">JavaScript</button>
+                <button type="button" class="tab-btn" data-tab="py">Python</button>
+              </div>
+            </div>
+
+            <div class="snippet-viewer">
+              <pre><code id="codeSnippet" class="code-block">curl -X POST https://ilhamdev-quote-api.hf.space/ ...</code></pre>
+              <button id="copySnippetBtn" type="button" class="copy-snippet-btn" title="Copy code snippet">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Global Toast Container -->
+      <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
