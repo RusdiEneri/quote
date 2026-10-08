@@ -1,0 +1,324 @@
+/* Preview Stage & Telegram Chat Bubble */
+.preview-panel {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.preview-mode-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.preview-stage-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 2rem 1.5rem;
+  background: #0b0f19;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+/* Telegram Simulated Card */
+.telegram-quote-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 480px;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+.tg-avatar-col {
+  flex-shrink: 0;
+}
+
+.tg-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: #1e293b;
+}
+
+.tg-bubble-col {
+  flex: 1;
+  background: #1b1e23;
+  border-radius: 14px 14px 14px 4px;
+  padding: 0.7rem 0.95rem 0.55rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  transition: background-color var(--transition-fast);
+}
+
+.tg-bubble-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.tg-sender-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e07a5f;
+  letter-spacing: -0.01em;
+}
+
+.tg-sender-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+/* Quoted Reply inside Bubble */
+.tg-reply-box {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+  margin-bottom: 0.5rem;
+}
+
+.tg-reply-line {
+  width: 3px;
+  border-radius: 2px;
+  background: #e07a5f;
+  flex-shrink: 0;
+}
+
+.tg-reply-content {
+  overflow: hidden;
+}
+
+.tg-reply-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e07a5f;
+  line-height: 1.2;
+}
+
+.tg-reply-text {
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.1rem;
+}
+
+/* Media in Bubble */
+.tg-media-box {
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 220px;
+}
+
+.tg-media-box.hidden {
+  display: none;
+}
+
+.tg-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Message Text */
+.tg-message-text {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #f1f5f9;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Timestamp & Meta */
+.tg-message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  color: #94a3b8;
+  font-size: 0.68rem;
+}
+
+.tg-checks {
+  color: #38bdf8;
+}
+
+/* Generated Image Result Card */
+.generated-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+  animation: fadeIn 0.4s ease;
+}
+
+.generated-box.hidden {
+  display: none;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.result-info {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.result-preview-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: #07090e;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1rem;
+}
+
+.rendered-image {
+  max-width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.result-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Developer Playground & Code Snippets */
+.api-playground-box {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: #090d16;
+  overflow: hidden;
+}
+
+.playground-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.playground-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.snippet-viewer {
+  position: relative;
+  padding: 0.85rem;
+}
+
+.code-block {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.copy-snippet-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.copy-snippet-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
