@@ -61,6 +61,8 @@ const copyImageBtn = document.getElementById('copyImageBtn');
 const apiStatusBadge = document.getElementById('apiStatusBadge');
 const apiStatusText = document.getElementById('apiStatusText');
 const toastEl = document.getElementById('toast');
+const prevFormatMeta = document.getElementById('prevFormatMeta');
+const prevBgMeta = document.getElementById('prevBgMeta');
 
 // Code Playground Elements
 const codeSnippet = document.getElementById('codeSnippet');
@@ -179,18 +181,26 @@ function updateLivePreview() {
   prevMessageText.textContent = text;
 
   // Mode Tag & Watermark visibility
+  const fmt = (imageFormatSelect.value || 'png').toUpperCase();
   if (type === 'stories') {
     previewModeTag.textContent = 'Stories Mode (9:16)';
     watermarkGroup.style.display = 'flex';
     previewStage.style.minHeight = '320px';
+    if (prevFormatMeta) prevFormatMeta.textContent = `${fmt} (1080×1920) • Stories 9:16`;
   } else if (type === 'image') {
     previewModeTag.textContent = 'Image Mode';
     watermarkGroup.style.display = 'flex';
     previewStage.style.minHeight = '240px';
+    if (prevFormatMeta) prevFormatMeta.textContent = `${fmt} (1280×720) • Canvas`;
   } else {
     previewModeTag.textContent = 'Quote Mode';
     watermarkGroup.style.display = 'none';
     previewStage.style.minHeight = '200px';
+    if (prevFormatMeta) prevFormatMeta.textContent = `${fmt} (512px max) • Sticker`;
+  }
+
+  if (prevBgMeta) {
+    prevBgMeta.textContent = bgColor.toUpperCase();
   }
 
   // Update Code Snippets
@@ -260,15 +270,11 @@ function updateCodeSnippets() {
   const targetApiUrl = `${SUBDOMAIN_URL}${PRIMARY_ENDPOINT}`;
 
   if (currentTab === 'curl') {
-    codeSnippet.textContent = `# 1. POST directly to Subdomain:
-curl -X POST "${targetApiUrl}" \\
+    codeSnippet.textContent = `curl -X POST "${targetApiUrl}" \\
   -H "Content-Type: application/json" \\
-  -d '${JSON.stringify(payload)}'
-
-# Alternatively, root POST: curl -X POST "${SUBDOMAIN_URL}/" -H "Content-Type: application/json" -d '...'`;
+  -d '${jsonString}'`;
   } else if (currentTab === 'js') {
-    codeSnippet.textContent = `// Direct POST to Subdomain
-const response = await fetch('${targetApiUrl}', {
+    codeSnippet.textContent = `const response = await fetch('${targetApiUrl}', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(${jsonString})
@@ -279,7 +285,6 @@ const imageBase64 = data.image; // data:image/png;base64,...`;
   } else if (currentTab === 'py') {
     codeSnippet.textContent = `import requests
 
-# Direct POST to Subdomain
 url = "${targetApiUrl}"
 payload = ${JSON.stringify(payload, null, 4)}
 
@@ -435,6 +440,12 @@ function copyCodeSnippet() {
   if (!code) return;
   navigator.clipboard.writeText(code).then(() => {
     showToast('Kode snippet disalin!', 'success');
+    const label = copySnippetBtn.querySelector('.copy-label') || copySnippetBtn.querySelector('span');
+    if (label) {
+      const prev = label.textContent;
+      label.textContent = 'Copied!';
+      setTimeout(() => { label.textContent = prev; }, 2000);
+    }
   }).catch(() => {
     showToast('Gagal menyalin snippet', 'error');
   });
@@ -491,6 +502,8 @@ function setupEvents() {
     btn.addEventListener('click', () => {
       const color = btn.dataset.color;
       if (color) {
+        document.querySelectorAll('.palette-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         bgColorInput.value = color;
         bgColorTextInput.value = color;
         updateLivePreview();
@@ -538,6 +551,23 @@ function setupEvents() {
     updateLivePreview();
     showToast('Form direset ke default', 'info');
   });
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.querySelector('.nav-links');
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.querySelectorAll('.nav-anchor').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
   // Generate Button
   generateBtn.addEventListener('click', generateQuote);

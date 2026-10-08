@@ -108,7 +108,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -124,14 +124,7 @@
       <!-- Top Navbar -->
       <header class="navbar">
         <a href="#studio" class="brand" title="Quote Studio Home">
-          <div class="brand-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              <path d="M8 10h.01"></path>
-              <path d="M12 10h.01"></path>
-              <path d="M16 10h.01"></path>
-            </svg>
-          </div>
+          <img src="/favicon.png" alt="Quote Studio Logo" class="brand-logo" width="38" height="38" />
           <div>
             <h1 class="brand-title">Quote Studio</h1>
             <p class="brand-sub">Telegram Quote Generator & REST API</p>
@@ -162,6 +155,13 @@
               <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
             </svg>
           </a>
+          <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -176,14 +176,14 @@
 
           <form id="quoteForm" class="editor-form" autocomplete="off">
             <!-- Section: Sender Info -->
-            <fieldset class="form-section">
-              <legend class="section-title">
+            <div class="form-section" role="group" aria-labelledby="senderInfoHeading">
+              <div class="section-title" id="senderInfoHeading">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                Sender Information
-              </legend>
+                <span>Sender Information</span>
+              </div>
 
               <div class="form-row">
                 <div class="form-group flex-2">
@@ -242,16 +242,16 @@
                   <button type="button" class="preset-avatar-btn" data-url="https://api.dicebear.com/7.x/notionists/svg?seed=Felix">Alex</button>
                 </div>
               </div>
-            </fieldset>
+            </div>
 
             <!-- Section: Message Content -->
-            <fieldset class="form-section">
-              <legend class="section-title">
+            <div class="form-section" role="group" aria-labelledby="messageContentHeading">
+              <div class="section-title" id="messageContentHeading">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
-                Message Content
-              </legend>
+                <span>Message Content</span>
+              </div>
 
               <div class="form-group">
                 <label for="messageText">Chat Text <span class="required">*</span></label>
@@ -317,11 +317,11 @@
                   />
                 </div>
               </div>
-            </fieldset>
+            </div>
 
             <!-- Section: Output & Styling -->
-            <fieldset class="form-section">
-              <legend class="section-title">
+            <div class="form-section" role="group" aria-labelledby="outputStyleHeading">
+              <div class="section-title" id="outputStyleHeading">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                   <path d="m4.93 4.93 4.24 4.24"></path>
@@ -329,8 +329,8 @@
                   <path d="m14.83 14.83 4.24 4.24"></path>
                   <path d="m9.17 14.83-4.24 4.24"></path>
                 </svg>
-                Output Style & Layout
-              </legend>
+                <span>Output Style & Layout</span>
+              </div>
 
               <div class="form-row">
                 <div class="form-group flex-1">
@@ -375,21 +375,23 @@
               <!-- Color Palette Quick Pick -->
               <div class="palette-group">
                 <span class="quick-pick-label">Telegram Themes:</span>
-                <button type="button" class="palette-btn" data-color="#1b1e23" style="background: #1b1e23" title="Dark Slate" aria-label="Dark Slate Theme"></button>
+                <button type="button" class="palette-btn active" data-color="#1b1e23" style="background: #1b1e23" title="Dark Slate" aria-label="Dark Slate Theme"></button>
                 <button type="button" class="palette-btn" data-color="#0f172a" style="background: #0f172a" title="Midnight" aria-label="Midnight Theme"></button>
                 <button type="button" class="palette-btn" data-color="#182533" style="background: #182533" title="Telegram Dark" aria-label="Telegram Dark Theme"></button>
                 <button type="button" class="palette-btn" data-color="#212d3b" style="background: #212d3b" title="Telegram Blue" aria-label="Telegram Blue Theme"></button>
                 <button type="button" class="palette-btn" data-color="#2d132c" style="background: #2d132c" title="Deep Plum" aria-label="Deep Plum Theme"></button>
                 <button type="button" class="palette-btn" data-color="#172e27" style="background: #172e27" title="Forest Dark" aria-label="Forest Dark Theme"></button>
               </div>
-            </fieldset>
+            </div>
 
             <!-- Generate Action Button -->
             <div class="form-actions">
               <button id="generateBtn" type="button" class="btn-primary">
                 <span class="btn-icon">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
                   </svg>
                 </span>
                 <span class="btn-text-label">Generate Quote Image</span>
@@ -398,11 +400,16 @@
           </form>
         </section>
 
-        <!-- Right: Live Preview & Result Panel -->
         <section class="panel preview-panel" aria-labelledby="previewHeading">
           <div class="panel-header">
             <h2 id="previewHeading" class="panel-title">Interactive Live Preview</h2>
             <div class="preview-mode-tag" id="previewModeTag">Quote Mode</div>
+          </div>
+
+          <!-- Live Preview Metadata Strip -->
+          <div class="preview-meta-strip">
+            <span class="preview-meta-item">Format: <strong id="prevFormatMeta">PNG (512px max)</strong></span>
+            <span class="preview-meta-item">Theme: <strong id="prevBgMeta">#1B1E23</strong></span>
           </div>
 
           <!-- Telegram Bubble Simulated Preview Box -->
@@ -467,7 +474,7 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                  <line x1="12" y1="3" x2="12" y2="3"></line>
                 </svg>
                 Download Image
               </a>
@@ -485,22 +492,24 @@
           <div class="api-playground-box">
             <div class="playground-header">
               <span class="playground-title">Developer Integration Snippet</span>
-              <div class="tab-buttons">
-                <button type="button" class="tab-btn active" data-tab="curl">cURL</button>
-                <button type="button" class="tab-btn" data-tab="js">JavaScript</button>
-                <button type="button" class="tab-btn" data-tab="py">Python</button>
+              <div class="playground-actions">
+                <div class="tab-buttons">
+                  <button type="button" class="tab-btn active" data-tab="curl">cURL</button>
+                  <button type="button" class="tab-btn" data-tab="js">JavaScript</button>
+                  <button type="button" class="tab-btn" data-tab="py">Python</button>
+                </div>
+                <button id="copySnippetBtn" type="button" class="copy-snippet-btn" title="Copy code snippet">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span class="copy-label">Copy</span>
+                </button>
               </div>
             </div>
 
             <div class="snippet-viewer">
               <pre><code id="codeSnippet" class="code-block">curl -X POST https://qc.mangrusdi.my.id/generate ...</code></pre>
-              <button id="copySnippetBtn" type="button" class="copy-snippet-btn" title="Copy code snippet">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <span>Copy</span>
-              </button>
             </div>
           </div>
         </section>
@@ -543,6 +552,89 @@
                 <td><code class="endpoint-path">https://qc.mangrusdi.my.id/status</code></td>
                 <td>Operational health check and service uptime info</td>
                 <td><code>application/json</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Request Body Schema Documentation -->
+        <div class="section-header" style="margin-top: 2rem;">
+          <h3 class="section-heading" style="font-size: 1.15rem;">Request Payload Schema (JSON)</h3>
+          <p class="section-desc">
+            Payload properties accepted by the <code>POST /generate</code> endpoint.
+          </p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Requirement</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="endpoint-path">messages</code></td>
+                <td><code>Array&lt;Object&gt;</code></td>
+                <td><span class="required">Required</span></td>
+                <td>Array of message objects to be stacked into quote bubble canvas.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">messages[].from.name</code></td>
+                <td><code>string</code></td>
+                <td><span class="required">Required</span></td>
+                <td>Sender display name shown at the top of the chat bubble.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">messages[].text</code></td>
+                <td><code>string</code></td>
+                <td><span class="required">Required</span></td>
+                <td>The text message content. Supports Markdown &amp; emojis.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">messages[].from.title</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td>Role badge next to the sender name (e.g. "Admin", "Owner").</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">messages[].from.photo.url</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td>Public image URL or base64 data URI for sender avatar.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">messages[].replyMessage</code></td>
+                <td><code>Object</code></td>
+                <td>Optional</td>
+                <td>Quoted reply box containing <code>name</code> and <code>text</code>.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">type</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td><code>"quote"</code> (sticker, 512px max), <code>"stories"</code> (9:16), or <code>"image"</code> (canvas).</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">format</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td>Image compression format: <code>"png"</code> (lossless) or <code>"webp"</code>.</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">backgroundColor</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td>Hex color string for chat bubble background (default: <code>"#1b1e23"</code>).</td>
+              </tr>
+              <tr>
+                <td><code class="endpoint-path">watermark</code></td>
+                <td><code>string</code></td>
+                <td>Optional</td>
+                <td>Branding watermark text applied on Stories and Canvas layouts.</td>
               </tr>
             </tbody>
           </table>

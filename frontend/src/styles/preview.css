@@ -7,13 +7,11 @@
 .preview-mode-tag {
   font-size: 0.72rem;
   font-weight: 600;
-  padding: 0.2rem 0.6rem;
+  padding: 0.2rem 0.55rem;
   border-radius: var(--radius-sm);
-  background: rgba(99, 102, 241, 0.15);
-  color: #818cf8;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  background: rgba(42, 171, 238, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(42, 171, 238, 0.2);
 }
 
 .preview-stage-container {
@@ -22,12 +20,11 @@
   justify-content: center;
   min-height: 220px;
   padding: 2rem 1.5rem;
-  background: #0b0f19;
+  background: var(--bg-input);
   border-radius: var(--radius-md);
-  border: 1px dashed var(--border-subtle);
+  border: 1px solid var(--border-subtle);
   position: relative;
   overflow: hidden;
-  transition: var(--transition-normal);
 }
 
 /* Telegram Simulated Card */
@@ -37,7 +34,6 @@
   gap: 0.75rem;
   max-width: 480px;
   width: 100%;
-  animation: fadeIn 0.3s ease;
 }
 
 .tg-avatar-col {
@@ -49,8 +45,7 @@
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  background: #1e293b;
+  background: var(--bg-nested);
 }
 
 .tg-bubble-col {
@@ -58,7 +53,6 @@
   background: #1b1e23;
   border-radius: 14px 14px 14px 4px;
   padding: 0.7rem 0.95rem 0.55rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   transition: background-color var(--transition-fast);
 }
@@ -95,6 +89,10 @@
   border-radius: 6px;
   padding: 0.35rem 0.55rem;
   margin-bottom: 0.5rem;
+}
+
+.tg-reply-box.hidden {
+  display: none;
 }
 
 .tg-reply-line {
@@ -169,13 +167,11 @@
 
 /* Generated Image Result Card */
 .generated-box {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   padding: 1.25rem;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: var(--bg-nested);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
-  animation: fadeIn 0.4s ease;
 }
 
 .generated-box.hidden {
@@ -195,7 +191,7 @@
   gap: 0.4rem;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #38bdf8;
+  color: var(--accent);
 }
 
 .result-info {
@@ -209,7 +205,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: #07090e;
+  background: var(--bg-dark);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   margin-bottom: 1rem;
@@ -220,7 +216,6 @@
   max-height: 380px;
   object-fit: contain;
   border-radius: 6px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
 .result-actions {
@@ -230,10 +225,10 @@
 
 /* Developer Playground & Code Snippets */
 .api-playground-box {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  background: #090d16;
+  background: var(--bg-input);
   overflow: hidden;
 }
 
@@ -241,9 +236,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 0.85rem;
-  background: rgba(255, 255, 255, 0.02);
+  padding: 0.5rem 0.85rem;
   border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .playground-title {
@@ -252,9 +249,15 @@
   color: var(--text-secondary);
 }
 
+.playground-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .tab-buttons {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .tab-btn {
@@ -274,51 +277,73 @@
 }
 
 .tab-btn.active {
-  background: rgba(99, 102, 241, 0.15);
-  color: #a5b4fc;
-  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(42, 171, 238, 0.1);
+  color: var(--accent);
+  border-color: rgba(42, 171, 238, 0.25);
+}
+
+.copy-snippet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.copy-snippet-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
 }
 
 .snippet-viewer {
-  position: relative;
-  padding: 0.85rem;
+  padding: 0;
+  background: #090c10;
 }
 
 .code-block {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #cbd5e1;
-  white-space: pre-wrap;
-  word-break: break-all;
-  max-height: 150px;
+  white-space: pre;
+  overflow-x: auto;
   overflow-y: auto;
+  max-height: 220px;
+  padding: 0.85rem 1rem;
 }
 
-.copy-snippet-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  display: inline-flex;
+/* Informative Live Preview Metadata Strip */
+.preview-meta-strip {
+  display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.55rem;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--border-subtle);
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  background: var(--bg-nested);
   border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
-  font-size: 0.7rem;
-  cursor: pointer;
-  transition: var(--transition-fast);
+  flex-wrap: wrap;
 }
 
-.copy-snippet-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+.preview-meta-item strong {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
