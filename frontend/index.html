@@ -15,6 +15,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="alternate icon" href="/favicon.ico" />
     <link rel="stylesheet" href="./src/styles/base.css" />
     <link rel="stylesheet" href="./src/styles/components.css" />
     <link rel="stylesheet" href="./src/styles/preview.css" />
@@ -127,7 +129,7 @@
                       </svg>
                       <span>Upload</span>
                     </label>
-                    <input type="file" id="avatarUploadInput" accept="image/*" class="file-hidden" />
+                    <input type="file" id="avatarUploadInput" accept="image/*" class="file-hidden" aria-label="Upload Avatar Image" />
                   </div>
                 </div>
                 <div class="avatar-quick-pick">
@@ -250,8 +252,8 @@
                 <div class="form-group flex-1">
                   <label for="bgColor">Background Color</label>
                   <div class="color-picker-row">
-                    <input type="color" id="bgColor" class="color-swatch" value="#1b1e23" />
-                    <input type="text" id="bgColorText" class="form-input hex-input" value="#1b1e23" />
+                    <input type="color" id="bgColor" class="color-swatch" value="#1b1e23" aria-label="Color Picker Swatch" />
+                    <input type="text" id="bgColorText" class="form-input hex-input" value="#1b1e23" aria-label="Hex Color Code" />
                   </div>
                 </div>
 

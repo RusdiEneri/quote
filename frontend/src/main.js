@@ -88,12 +88,20 @@ async function checkApiStatus() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 6000);
     
-    // Try proxy first, then fallback to direct HF endpoint
+    // Try direct HF Space first (CORS enabled), then proxy
     let res;
     try {
-      res = await fetch(STATUS_URL, { signal: controller.signal });
-    } catch {
       res = await fetch(`${API_BASE_URL}/status`, { signal: controller.signal });
+    } catch {
+      // direct failed, attempt proxy
+    }
+
+    if (!res || !res.ok) {
+      try {
+        res = await fetch(STATUS_URL, { signal: controller.signal });
+      } catch {
+        // proxy failed as well
+      }
     }
     clearTimeout(timeout);
 
