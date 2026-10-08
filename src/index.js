@@ -2,6 +2,7 @@ import * as cm from 'cache-manager';
 import fastq from 'fastq';
 
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { marked } from 'marked';
 import { poweredBy } from 'hono/powered-by';
 import { prettyJSON } from 'hono/pretty-json';
@@ -31,6 +32,11 @@ const queue = fastq.promise(async ({ key, c, body }) => {
 	}
 }, 1);
 
+app.use('*', cors({
+	origin: '*',
+	allowMethods: ['GET', 'POST', 'OPTIONS'],
+	allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
 app.use(poweredBy({ serverName: 'Hisoka Labs' }));
 app.use(prettyJSON({ space: 3 }));
 
@@ -151,6 +157,6 @@ app.get('/status', c => {
 });
 
 export default {
-	port: process.env.PORT || 3000,
+	port: process.env.PORT || 7860,
 	fetch: app.fetch,
 };
