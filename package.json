@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.js",
-    "dev": "bun run --watch src/index.js"
+    "dev": "bun run --watch src/index.js",
+    "build": "npm --prefix frontend run build"
   },
   "repository": {
     "type": "git",

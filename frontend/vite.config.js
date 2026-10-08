@@ -4,6 +4,11 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      '/generate': {
+        target: 'https://ilhamdev-quote-api.hf.space',
+        changeOrigin: true,
+        rewrite: () => '/',
+      },
       '/api': {
         target: 'https://ilhamdev-quote-api.hf.space',
         changeOrigin: true,

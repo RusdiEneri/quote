@@ -4,9 +4,15 @@
  */
 
 // API Configuration
-const API_BASE_URL = 'https://ilhamdev-quote-api.hf.space';
-const PROXY_URL = '/api/generate';
-const STATUS_URL = '/api/status';
+// Subdomain Proxy: Direct POST to Vercel subdomain qc.mangrusdi.my.id
+const SUBDOMAIN_URL = typeof window !== 'undefined' && window.location.origin.includes('qc.mangrusdi.my.id')
+  ? 'https://qc.mangrusdi.my.id'
+  : (typeof window !== 'undefined' ? window.location.origin : 'https://qc.mangrusdi.my.id');
+
+const HF_BACKEND_URL = 'https://ilhamdev-quote-api.hf.space';
+const PRIMARY_ENDPOINT = '/generate';
+const PROXY_ENDPOINT = '/api/generate';
+const STATUS_ENDPOINT = '/status';
 
 // DOM Elements
 const form = document.getElementById('quoteForm');
@@ -87,20 +93,19 @@ async function checkApiStatus() {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 6000);
-    
-    // Try direct HF Space first (CORS enabled), then proxy
+    // Check Subdomain Proxy /status first, fallback to HF backend directly
     let res;
     try {
-      res = await fetch(`${API_BASE_URL}/status`, { signal: controller.signal });
+      res = await fetch(STATUS_ENDPOINT, { signal: controller.signal });
     } catch {
-      // direct failed, attempt proxy
+      // Subdomain failed, try /api/status or direct HF
     }
 
     if (!res || !res.ok) {
       try {
-        res = await fetch(STATUS_URL, { signal: controller.signal });
+        res = await fetch(`${HF_BACKEND_URL}/status`, { signal: controller.signal });
       } catch {
-        // proxy failed as well
+        // Direct HF failed as well
       }
     }
     clearTimeout(timeout);
@@ -252,13 +257,18 @@ function buildApiPayload() {
 function updateCodeSnippets() {
   const payload = buildApiPayload();
   const jsonString = JSON.stringify(payload, null, 2);
+  const targetApiUrl = `${SUBDOMAIN_URL}${PRIMARY_ENDPOINT}`;
 
   if (currentTab === 'curl') {
-    codeSnippet.textContent = `curl -X POST "${API_BASE_URL}/" \\
+    codeSnippet.textContent = `# 1. POST directly to Subdomain:
+curl -X POST "${targetApiUrl}" \\
   -H "Content-Type: application/json" \\
-  -d '${JSON.stringify(payload)}'`;
+  -d '${JSON.stringify(payload)}'
+
+# Alternatively, root POST: curl -X POST "${SUBDOMAIN_URL}/" -H "Content-Type: application/json" -d '...'`;
   } else if (currentTab === 'js') {
-    codeSnippet.textContent = `const response = await fetch('${API_BASE_URL}/', {
+    codeSnippet.textContent = `// Direct POST to Subdomain
+const response = await fetch('${targetApiUrl}', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(${jsonString})
@@ -269,7 +279,8 @@ const imageBase64 = data.image; // data:image/png;base64,...`;
   } else if (currentTab === 'py') {
     codeSnippet.textContent = `import requests
 
-url = "${API_BASE_URL}/"
+# Direct POST to Subdomain
+url = "${targetApiUrl}"
 payload = ${JSON.stringify(payload, null, 4)}
 
 response = requests.post(url, json=payload)
@@ -305,40 +316,58 @@ async function generateQuote() {
         <path d="M12 2a10 10 0 0 1 10 10"></path>
       </svg>
     </span>
-    <span>Generating via Hugging Face Space...</span>
+    <span>Generating via Subdomain Proxy...</span>
   `;
 
   const payload = buildApiPayload();
 
   const controller = new AbortController();
-  const timeoutTimer = setTimeout(() => controller.abort(), 30000);
+  const timeoutTimer = setTimeout(() => controller.abort(), 35000);
 
   try {
     let response;
-    // Attempt request to direct HF endpoint first (with CORS), fallback to proxy
+    // Attempt request to Subdomain /generate first, then /api/generate, then direct HF
     try {
-      response = await fetch(`${API_BASE_URL}/`, {
+      response = await fetch(PRIMARY_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         signal: controller.signal,
       });
-    } catch (directErr) {
-      if (directErr.name === 'AbortError') {
-        throw new Error('Request timeout setelah 30 detik');
+    } catch (e1) {
+      if (e1.name === 'AbortError') throw new Error('Request timeout setelah 35 detik');
+    }
+
+    if (!response || !response.ok) {
+      try {
+        response = await fetch(PROXY_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+      } catch (e2) {
+        if (e2.name === 'AbortError') throw new Error('Request timeout setelah 35 detik');
       }
-      response = await fetch(PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-      });
+    }
+
+    if (!response || !response.ok) {
+      try {
+        response = await fetch(`${HF_BACKEND_URL}/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+      } catch (e3) {
+        if (e3.name === 'AbortError') throw new Error('Request timeout setelah 35 detik');
+      }
     }
 
     clearTimeout(timeoutTimer);
 
-    if (!response.ok) {
-      throw new Error(`Server returned HTTP ${response.status}`);
+    if (!response || !response.ok) {
+      throw new Error(`Server returned HTTP ${response ? response.status : 'offline'}`);
     }
 
     const data = await response.json();
