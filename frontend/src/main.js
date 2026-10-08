@@ -310,6 +310,9 @@ async function generateQuote() {
 
   const payload = buildApiPayload();
 
+  const controller = new AbortController();
+  const timeoutTimer = setTimeout(() => controller.abort(), 30000);
+
   try {
     let response;
     // Attempt request to direct HF endpoint first (with CORS), fallback to proxy
@@ -318,14 +321,21 @@ async function generateQuote() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
-    } catch {
+    } catch (directErr) {
+      if (directErr.name === 'AbortError') {
+        throw new Error('Request timeout setelah 30 detik');
+      }
       response = await fetch(PROXY_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
     }
+
+    clearTimeout(timeoutTimer);
 
     if (!response.ok) {
       throw new Error(`Server returned HTTP ${response.status}`);

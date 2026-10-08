@@ -30,7 +30,7 @@ const queue = fastq.promise(async ({ key, c, body }) => {
 	} finally {
 		inflight.delete(key);
 	}
-}, 1);
+}, 4);
 
 app.use('*', cors({
 	origin: '*',

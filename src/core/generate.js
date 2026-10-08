@@ -128,19 +128,29 @@ class QuoteGenerate {
 	}
 
 	async callTelegramApi(method, params = {}) {
+		if (!this.telegramToken) return null;
 		const url = `https://api.telegram.org/bot${this.telegramToken}/${method}`;
 
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Connection: 'keep-alive',
-			},
-			body: JSON.stringify(params),
-		});
-		const data = await response.json();
-		if (!data.ok) throw new Error(data.description);
-		return data.result;
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), 5000);
+
+		try {
+			const response = await fetch(url, {
+				signal: controller.signal,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(params),
+			});
+			clearTimeout(timeout);
+			const data = await response.json();
+			if (!data.ok) throw new Error(data.description);
+			return data.result;
+		} catch (e) {
+			clearTimeout(timeout);
+			return null;
+		}
 	}
 
 	async avatarImageLatters(letters, color) {
@@ -819,7 +829,7 @@ class QuoteGenerate {
 		const avatarImage = await this.downloadAvatarImage(user);
 
 		if (avatarImage) {
-			const avatarSize = avatarImage.naturalHeight;
+			const avatarSize = avatarImage.naturalHeight || avatarImage.height || 500;
 
 			const canvas = createCanvas(avatarSize, avatarSize);
 			const canvasCtx = canvas.getContext('2d');
