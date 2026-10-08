@@ -3,12 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram Quote Maker & API Studio</title>
+    <title>Telegram Quote Maker & Generator REST API | Mang Rusdi</title>
     <meta
       name="description"
-      content="Create beautiful Telegram fake chat quotes, stories, and stickers with instant live preview and high-performance API backend."
+      content="Generate high-resolution Telegram chat bubble quotes, transparent stickers, and vertical stories. Web customizer and public REST API on qc.mangrusdi.my.id."
     />
-    <meta name="keywords" content="telegram quote generator, fake chat maker, quotly api, telegram sticker quote, quote maker web" />
+    <meta name="keywords" content="telegram quote generator, fake chat maker, quotly api, telegram sticker quote, quote maker web, telegram bot api" />
+    <meta name="author" content="Rusdi Ilham" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://qc.mangrusdi.my.id/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://qc.mangrusdi.my.id/" />
+    <meta property="og:site_name" content="Quote Studio" />
+    <meta property="og:title" content="Telegram Quote Maker & Generator REST API" />
+    <meta
+      property="og:description"
+      content="Generate high-resolution Telegram chat bubble quotes, transparent stickers, and vertical stories with real-time preview and free REST API."
+    />
+    <meta property="og:image" content="https://qc.mangrusdi.my.id/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Telegram Quote Studio Interface" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Telegram Quote Maker & Generator REST API" />
+    <meta
+      name="twitter:description"
+      content="Generate high-resolution Telegram chat bubble quotes, transparent stickers, and vertical stories with real-time preview and free REST API."
+    />
+    <meta name="twitter:image" content="https://qc.mangrusdi.my.id/og-image.png" />
+
+    <!-- JSON-LD Structured Data for Google Search Console -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://qc.mangrusdi.my.id/#app",
+          "name": "Telegram Quote Maker & Generator REST API",
+          "url": "https://qc.mangrusdi.my.id/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "All",
+          "inLanguage": "en",
+          "description": "Generate Telegram message bubble quotes, transparent stickers, and 9:16 vertical stories with live preview and open REST API endpoints.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Rusdi Ilham",
+            "url": "https://github.com/RusdiEneri"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://qc.mangrusdi.my.id/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How to generate quote stickers using the REST API?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Send an HTTP POST request to https://qc.mangrusdi.my.id/generate with Content-Type: application/json and a messages array payload containing sender details and message text. The server returns high resolution PNG or WebP image data."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Which output formats are supported?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The API supports PNG lossless image rendering with full alpha transparency, as well as WebP format for optimized file size in web and bot integrations."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use custom avatar pictures?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Provide a public image URL or upload an image file through the web customizer, which converts local photos into base64 format automatically."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is there a health check endpoint?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, send an HTTP GET request to https://qc.mangrusdi.my.id/status to check server uptime and operational status."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,6 +113,8 @@
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="alternate icon" href="/favicon.ico" />
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="./src/styles/base.css" />
     <link rel="stylesheet" href="./src/styles/components.css" />
     <link rel="stylesheet" href="./src/styles/preview.css" />
@@ -25,7 +123,7 @@
     <div id="app" class="app-layout">
       <!-- Top Navbar -->
       <header class="navbar">
-        <div class="brand">
+        <a href="#studio" class="brand" title="Quote Studio Home">
           <div class="brand-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -36,9 +134,16 @@
           </div>
           <div>
             <h1 class="brand-title">Quote Studio</h1>
-            <p class="brand-sub">Telegram Quote Generator & API</p>
+            <p class="brand-sub">Telegram Quote Generator & REST API</p>
           </div>
-        </div>
+        </a>
+
+        <nav class="nav-links" aria-label="Page Navigation">
+          <a href="#studio" class="nav-anchor">Studio</a>
+          <a href="#api-docs" class="nav-anchor">API Endpoints</a>
+          <a href="#specs" class="nav-anchor">Formats</a>
+          <a href="#faq" class="nav-anchor">FAQ</a>
+        </nav>
 
         <div class="nav-actions">
           <div id="apiStatusBadge" class="status-badge checking">
@@ -46,24 +151,22 @@
             <span id="apiStatusText">Checking API...</span>
           </div>
           <a
-            href="https://huggingface.co/spaces/ilhamdev/quote-api"
+            href="https://github.com/RusdiEneri/quote"
             target="_blank"
             rel="noopener noreferrer"
             class="nav-link-btn"
-            title="Hugging Face Space Backend"
+            title="GitHub Repository"
           >
-            <span>HF Space</span>
+            <span>GitHub</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
             </svg>
           </a>
         </div>
       </header>
 
       <!-- Main Studio Grid -->
-      <main class="studio-container">
+      <main class="studio-container" id="studio">
         <!-- Left: Form Controls Panel -->
         <section class="panel editor-panel" aria-labelledby="editorHeading">
           <div class="panel-header">
@@ -110,7 +213,7 @@
 
               <!-- Avatar Management -->
               <div class="form-group">
-                <label>Avatar Photo</label>
+                <label for="avatarUrl">Avatar Photo</label>
                 <div class="avatar-tabs">
                   <div class="avatar-input-wrapper">
                     <input
@@ -272,12 +375,12 @@
               <!-- Color Palette Quick Pick -->
               <div class="palette-group">
                 <span class="quick-pick-label">Telegram Themes:</span>
-                <button type="button" class="palette-btn" data-color="#1b1e23" style="background: #1b1e23" title="Dark Slate"></button>
-                <button type="button" class="palette-btn" data-color="#0f172a" style="background: #0f172a" title="Midnight"></button>
-                <button type="button" class="palette-btn" data-color="#182533" style="background: #182533" title="Telegram Dark"></button>
-                <button type="button" class="palette-btn" data-color="#212d3b" style="background: #212d3b" title="Telegram Blue"></button>
-                <button type="button" class="palette-btn" data-color="#2d132c" style="background: #2d132c" title="Deep Plum"></button>
-                <button type="button" class="palette-btn" data-color="#172e27" style="background: #172e27" title="Forest Dark"></button>
+                <button type="button" class="palette-btn" data-color="#1b1e23" style="background: #1b1e23" title="Dark Slate" aria-label="Dark Slate Theme"></button>
+                <button type="button" class="palette-btn" data-color="#0f172a" style="background: #0f172a" title="Midnight" aria-label="Midnight Theme"></button>
+                <button type="button" class="palette-btn" data-color="#182533" style="background: #182533" title="Telegram Dark" aria-label="Telegram Dark Theme"></button>
+                <button type="button" class="palette-btn" data-color="#212d3b" style="background: #212d3b" title="Telegram Blue" aria-label="Telegram Blue Theme"></button>
+                <button type="button" class="palette-btn" data-color="#2d132c" style="background: #2d132c" title="Deep Plum" aria-label="Deep Plum Theme"></button>
+                <button type="button" class="palette-btn" data-color="#172e27" style="background: #172e27" title="Forest Dark" aria-label="Forest Dark Theme"></button>
               </div>
             </fieldset>
 
@@ -350,13 +453,13 @@
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
-                Rendered by Hugging Face API
+                Rendered by Quote API
               </span>
               <div class="result-info" id="resultMeta">PNG • 512x360</div>
             </div>
 
             <div class="result-preview-image-wrap">
-              <img id="renderedImage" src="" alt="Rendered Quote" class="rendered-image" />
+              <img id="renderedImage" src="" alt="Rendered Quote Output" class="rendered-image" />
             </div>
 
             <div class="result-actions">
@@ -402,6 +505,206 @@
           </div>
         </section>
       </main>
+
+      <!-- Section: API Reference & Parameter Documentation -->
+      <section class="content-section" id="api-docs" aria-labelledby="apiDocsHeading">
+        <div class="section-header">
+          <h2 id="apiDocsHeading" class="section-heading">REST API Reference & Endpoints</h2>
+          <p class="section-desc">
+            Directly integrate Telegram quote generation into your Telegram bots, web apps, or backend services using our public endpoints.
+          </p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Description</th>
+                <th>Content-Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="method-tag post">POST</span></td>
+                <td><code class="endpoint-path">https://qc.mangrusdi.my.id/generate</code></td>
+                <td>Main quote generator endpoint (returns base64 image and dimensions)</td>
+                <td><code>application/json</code></td>
+              </tr>
+              <tr>
+                <td><span class="method-tag post">POST</span></td>
+                <td><code class="endpoint-path">https://qc.mangrusdi.my.id/api/generate</code></td>
+                <td>Secondary proxy route for flexible integrations</td>
+                <td><code>application/json</code></td>
+              </tr>
+              <tr>
+                <td><span class="method-tag get">GET</span></td>
+                <td><code class="endpoint-path">https://qc.mangrusdi.my.id/status</code></td>
+                <td>Operational health check and service uptime info</td>
+                <td><code>application/json</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Output Formats & Specs -->
+      <section class="content-section" id="specs" aria-labelledby="specsHeading">
+        <div class="section-header">
+          <h2 id="specsHeading" class="section-heading">Supported Output Layouts</h2>
+          <p class="section-desc">
+            Choose the layout format suited to your media channel: transparent stickers, vertical stories, or wide canvas cards.
+          </p>
+        </div>
+
+        <div class="modes-grid">
+          <div class="mode-card">
+            <h3 class="mode-card-title">Quote Bubble (Sticker)</h3>
+            <p class="mode-card-desc">
+              Standard Telegram message bubble rendered with transparent background, ideal for creating Telegram sticker packs and bot replies.
+            </p>
+            <ul class="mode-specs-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                512px standard sticker width
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Full alpha channel transparency
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Supports replies and badges
+              </li>
+            </ul>
+          </div>
+
+          <div class="mode-card">
+            <h3 class="mode-card-title">Vertical Stories (9:16)</h3>
+            <p class="mode-card-desc">
+              High-resolution vertical format designed for Telegram Stories, WhatsApp Status, and Instagram Reels with custom background themes.
+            </p>
+            <ul class="mode-specs-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                1080 x 1920 portrait canvas
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                4x supersampling resolution
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Custom watermark placement
+              </li>
+            </ul>
+          </div>
+
+          <div class="mode-card">
+            <h3 class="mode-card-title">Image Card (Canvas)</h3>
+            <p class="mode-card-desc">
+              Horizontal card presentation featuring elevation shadows, rounded frames, and clean padding for social media embeds and articles.
+            </p>
+            <ul class="mode-specs-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                1280 x 720 landscape canvas
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Soft elevation shadow
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Lossless PNG and compact WebP
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Frequently Asked Questions -->
+      <section class="content-section" id="faq" aria-labelledby="faqHeading">
+        <div class="section-header">
+          <h2 id="faqHeading" class="section-heading">Frequently Asked Questions</h2>
+          <p class="section-desc">
+            Common questions regarding integration, file formats, and server capabilities.
+          </p>
+        </div>
+
+        <div class="faq-grid">
+          <details class="faq-item" open>
+            <summary class="faq-summary">How do I generate quote stickers using the REST API?</summary>
+            <div class="faq-answer">
+              Send an HTTP POST request to <code>https://qc.mangrusdi.my.id/generate</code> with header <code>Content-Type: application/json</code>. Include a <code>messages</code> array containing the sender name, avatar URL, and text message. The server processes the canvas in approximately 1 to 2 seconds and returns the resulting base64 image.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">Which image formats and transparency settings are supported?</summary>
+            <div class="faq-answer">
+              The API natively supports PNG and WebP. For standard sticker bubbles, PNG preserves complete alpha transparency, making it ready to upload directly as a Telegram sticker. WebP provides smaller payloads for web rendering and mobile bandwidth efficiency.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">Can I supply local avatar pictures without public hosting?</summary>
+            <div class="faq-answer">
+              Yes. The web customizer includes an upload button that reads your local image file and converts it into a base64 data URI (<code>data:image/png;base64,...</code>). The backend accepts both HTTP image links and base64 data URIs for avatars and attachments.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">Is there a health check endpoint to monitor API uptime?</summary>
+            <div class="faq-answer">
+              Yes. A simple HTTP GET request to <code>https://qc.mangrusdi.my.id/status</code> returns a JSON object containing operational status, server availability, and uptime duration.
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Site Footer -->
+      <footer class="site-footer">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand-text">Quote Studio</div>
+            <p class="footer-sub">Open-Source Telegram Quote Generator & REST API Engine</p>
+          </div>
+
+          <div class="footer-links">
+            <a href="#studio" class="footer-link">Customizer</a>
+            <a href="#api-docs" class="footer-link">Documentation</a>
+            <a href="#specs" class="footer-link">Layout Formats</a>
+            <a href="#faq" class="footer-link">FAQ</a>
+            <a href="https://github.com/RusdiEneri/quote" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
+            <a href="https://huggingface.co/spaces/ilhamdev/quote-api" target="_blank" rel="noopener noreferrer" class="footer-link">Hugging Face Space</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Mang Rusdi. Built with Bun, Hono, Node-Canvas, and Vite.</p>
+          <p>Licensed under MIT. Open for personal and bot automation projects.</p>
+        </div>
+      </footer>
 
       <!-- Global Toast Container -->
       <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>

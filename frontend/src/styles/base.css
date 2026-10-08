@@ -127,9 +127,39 @@ body {
   align-items: start;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-anchor {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.nav-anchor:hover {
+  color: #ffffff;
+}
+
 @media (max-width: 960px) {
   .studio-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 }
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+
