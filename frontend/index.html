@@ -141,7 +141,7 @@
         <div class="nav-actions">
           <div id="apiStatusBadge" class="status-badge checking">
             <span class="status-dot"></span>
-            <span id="apiStatusText">Checking API...</span>
+            <span id="apiStatusText" class="status-text">Checking API...</span>
           </div>
           <a
             href="https://github.com/RusdiEneri/quote"
@@ -165,10 +165,29 @@
         </div>
       </header>
 
+      <!-- Mobile View Switcher (Visible on small screens) -->
+      <div class="mobile-studio-switcher" role="tablist" aria-label="Studio View Switcher">
+        <button type="button" class="studio-tab-btn active" id="tabEditorBtn" role="tab" aria-selected="true" aria-controls="editorPanel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span>Customizer</span>
+        </button>
+        <button type="button" class="studio-tab-btn" id="tabPreviewBtn" role="tab" aria-selected="false" aria-controls="previewPanel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Live Preview</span>
+          <span class="tab-badge" id="previewBadgeLive">Live</span>
+        </button>
+      </div>
+
       <!-- Main Studio Grid -->
       <main class="studio-container" id="studio">
         <!-- Left: Form Controls Panel -->
-        <section class="panel editor-panel" aria-labelledby="editorHeading">
+        <section class="panel editor-panel active-mobile-view" id="editorPanel" aria-labelledby="editorHeading">
           <div class="panel-header">
             <h2 id="editorHeading" class="panel-title">Quote Customizer</h2>
             <button id="resetFormBtn" type="button" class="btn-text" title="Reset form to default values">Reset</button>
@@ -400,7 +419,7 @@
           </form>
         </section>
 
-        <section class="panel preview-panel" aria-labelledby="previewHeading">
+        <section class="panel preview-panel" id="previewPanel" aria-labelledby="previewHeading">
           <div class="panel-header">
             <h2 id="previewHeading" class="panel-title">Interactive Live Preview</h2>
             <div class="preview-mode-tag" id="previewModeTag">Quote Mode</div>

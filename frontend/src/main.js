@@ -294,6 +294,30 @@ image_base64 = data["image"]`;
   }
 }
 
+// Switch Mobile Studio Tabs (Customizer vs Live Preview)
+function switchMobileTab(target) {
+  const tabEditorBtn = document.getElementById('tabEditorBtn');
+  const tabPreviewBtn = document.getElementById('tabPreviewBtn');
+  const editorPanel = document.getElementById('editorPanel');
+  const previewPanel = document.getElementById('previewPanel');
+
+  if (target === 'editor') {
+    tabEditorBtn?.classList.add('active');
+    tabEditorBtn?.setAttribute('aria-selected', 'true');
+    tabPreviewBtn?.classList.remove('active');
+    tabPreviewBtn?.setAttribute('aria-selected', 'false');
+    editorPanel?.classList.add('active-mobile-view');
+    previewPanel?.classList.remove('active-mobile-view');
+  } else {
+    tabPreviewBtn?.classList.add('active');
+    tabPreviewBtn?.setAttribute('aria-selected', 'true');
+    tabEditorBtn?.classList.remove('active');
+    tabEditorBtn?.setAttribute('aria-selected', 'false');
+    previewPanel?.classList.add('active-mobile-view');
+    editorPanel?.classList.remove('active-mobile-view');
+  }
+}
+
 // Generate Quote via Backend API
 async function generateQuote() {
   const text = messageTextInput.value.trim();
@@ -323,6 +347,11 @@ async function generateQuote() {
     </span>
     <span>Generating via Subdomain Proxy...</span>
   `;
+
+  // On mobile screens, automatically switch to Preview tab so user sees loading & generated result
+  if (window.innerWidth <= 960) {
+    switchMobileTab('preview');
+  }
 
   const payload = buildApiPayload();
 
@@ -556,7 +585,8 @@ function setupEvents() {
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   const navLinks = document.querySelector('.nav-links');
   if (mobileMenuBtn && navLinks) {
-    mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = navLinks.classList.toggle('open');
       mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
     });
@@ -567,6 +597,28 @@ function setupEvents() {
         mobileMenuBtn.setAttribute('aria-expanded', 'false');
       });
     });
+
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        navLinks.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        navLinks.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Mobile Studio Switcher Tabs
+  const tabEditorBtn = document.getElementById('tabEditorBtn');
+  const tabPreviewBtn = document.getElementById('tabPreviewBtn');
+  if (tabEditorBtn && tabPreviewBtn) {
+    tabEditorBtn.addEventListener('click', () => switchMobileTab('editor'));
+    tabPreviewBtn.addEventListener('click', () => switchMobileTab('preview'));
   }
 
   // Generate Button

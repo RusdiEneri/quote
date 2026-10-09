@@ -2,6 +2,14 @@
 .preview-panel {
   position: sticky;
   top: 1.5rem;
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .preview-panel {
+    position: static;
+    top: auto;
+  }
 }
 
 .preview-mode-tag {
@@ -25,6 +33,8 @@
   border: 1px solid var(--border-subtle);
   position: relative;
   overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
 }
 
 /* Telegram Simulated Card */
@@ -34,6 +44,7 @@
   gap: 0.75rem;
   max-width: 480px;
   width: 100%;
+  min-width: 0;
 }
 
 .tg-avatar-col {
@@ -55,6 +66,7 @@
   padding: 0.7rem 0.95rem 0.55rem;
   position: relative;
   transition: background-color var(--transition-fast);
+  min-width: 0;
 }
 
 .tg-bubble-header {
@@ -62,6 +74,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.35rem;
+  min-width: 0;
 }
 
 .tg-sender-name {
@@ -69,6 +82,9 @@
   font-weight: 600;
   color: #e07a5f;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tg-sender-badge {
@@ -78,6 +94,7 @@
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.12);
   color: #94a3b8;
+  flex-shrink: 0;
 }
 
 /* Quoted Reply inside Bubble */
@@ -89,6 +106,7 @@
   border-radius: 6px;
   padding: 0.35rem 0.55rem;
   margin-bottom: 0.5rem;
+  min-width: 0;
 }
 
 .tg-reply-box.hidden {
@@ -104,6 +122,8 @@
 
 .tg-reply-content {
   overflow: hidden;
+  min-width: 0;
+  flex: 1;
 }
 
 .tg-reply-name {
@@ -221,6 +241,7 @@
 .result-actions {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 /* Developer Playground & Code Snippets */
@@ -230,6 +251,8 @@
   border-radius: var(--radius-md);
   background: var(--bg-input);
   overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .playground-header {
@@ -253,6 +276,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .tab-buttons {
@@ -264,12 +288,16 @@
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  padding: 0.2rem 0.55rem;
+  padding: 0.3rem 0.65rem;
+  min-height: 36px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tab-btn:hover {
@@ -286,12 +314,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.3rem 0.65rem;
+  min-height: 36px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition-fast);
@@ -307,6 +336,8 @@
 .snippet-viewer {
   padding: 0;
   background: #090c10;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .code-block {
@@ -320,6 +351,8 @@
   overflow-y: auto;
   max-height: 220px;
   padding: 0.85rem 1rem;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Informative Live Preview Metadata Strip */
@@ -346,4 +379,27 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .preview-stage-container {
+    padding: 1.25rem 0.75rem;
+    min-height: 180px;
+  }
+  .tg-avatar {
+    width: 38px;
+    height: 38px;
+  }
+  .telegram-quote-card {
+    gap: 0.5rem;
+  }
+  .tg-bubble-col {
+    padding: 0.6rem 0.75rem 0.5rem;
+  }
+  .result-actions .btn-secondary,
+  .result-actions .btn-outline {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }
 }
