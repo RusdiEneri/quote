@@ -140,7 +140,7 @@ body {
   text-decoration: none;
   color: inherit;
   min-width: 0;
-  flex-shrink: 1;
+  flex-shrink: 0;
 }
 
 .brand-logo {
@@ -230,6 +230,12 @@ body {
 .nav-anchor:active {
   transform: translate(2px, 2px);
   box-shadow: 0px 0px 0px var(--shadow-color);
+}
+
+/* Mobile Drawer Elements (Desktop Hidden) */
+.mobile-nav-divider,
+.nav-links .mobile-drawer-btn {
+  display: none;
 }
 
 /* Nav Actions */
@@ -541,14 +547,59 @@ body {
     font-size: 0.95rem;
   }
 
+  .mobile-nav-divider {
+    display: block;
+    height: 2px;
+    background: var(--border-color);
+    margin: 0.35rem 0;
+    opacity: 0.25;
+  }
+
+  .nav-links .mobile-drawer-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-weight: 700;
+  }
+
+  .nav-links .mobile-drawer-wa {
+    background: #25D366;
+    color: #000000;
+  }
+
+  .nav-links .mobile-drawer-wa:hover {
+    background: #20BA5A;
+    color: #000000;
+  }
+
+  .nav-links .mobile-drawer-github {
+    background: var(--bg-card);
+    color: var(--text-primary);
+  }
+
   .mobile-menu-btn {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  /* Reflow secondary actions into mobile drawer to free header row */
+  .nav-actions .whatsapp-btn,
+  .nav-actions .nav-link-btn {
+    display: none;
   }
 
   .navbar {
     position: relative;
     padding: 1rem 0;
     margin-bottom: 1.5rem;
+    gap: 0.75rem;
   }
 }
 
@@ -573,26 +624,60 @@ body {
   .nav-actions {
     gap: 0.5rem;
   }
-}
 
-@media (max-width: 480px) {
   #apiStatusBadge .status-text {
     display: none;
   }
 
   #apiStatusBadge {
     padding: 0.4rem 0.55rem;
-    min-height: 40px;
+    min-height: 42px;
+    min-width: 42px;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
   }
+}
 
-  .nav-link-btn span {
+@media (max-width: 480px) {
+  .brand-tag {
     display: none;
   }
 
-  .nav-link-btn {
-    padding: 0.4rem 0.6rem;
-    min-width: 42px;
-    justify-content: center;
+  .brand-title {
+    font-size: 1.1rem;
+  }
+
+  .nav-actions {
+    gap: 0.45rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-layout {
+    padding: 0 0.65rem 1.75rem;
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+  }
+
+  .nav-actions {
+    gap: 0.35rem;
+  }
+
+  .theme-toggle-btn,
+  .mobile-menu-btn,
+  #apiStatusBadge {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
   }
 }
 

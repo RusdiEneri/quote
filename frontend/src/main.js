@@ -180,12 +180,14 @@ async function checkApiStatus() {
       const data = await res.json();
       apiStatusBadge.className = 'status-badge online';
       apiStatusText.textContent = 'API Space Online';
+      apiStatusBadge.title = 'API Space Online';
     } else {
       throw new Error('Non-200 status');
     }
   } catch (err) {
     apiStatusBadge.className = 'status-badge checking';
     apiStatusText.textContent = 'HF Space Sleeping / Ready';
+    apiStatusBadge.title = 'HF Space Sleeping / Ready';
   }
 }
 
