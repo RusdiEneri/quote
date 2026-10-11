@@ -1,4 +1,9 @@
-/* Preview Stage & Telegram Chat Bubble */
+/* ==========================================================================
+   NEUBRUTALISM DESIGN SYSTEM - PREVIEW.CSS
+   Live Preview Stage, Simulated Telegram Bubble, and Developer Drawer
+   ========================================================================== */
+
+/* Preview Panel */
 .preview-panel {
   position: sticky;
   top: 1.5rem;
@@ -12,37 +17,68 @@
   }
 }
 
+/* Mode Tag */
 .preview-mode-tag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-sm);
-  background: rgba(42, 171, 238, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(42, 171, 238, 0.2);
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-xs);
+  background: var(--color-tertiary);
+  color: #ffffff;
+  border: var(--border-sm);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
+/* Live Preview Metadata Strip */
+.preview-meta-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--bg-nested);
+  border-radius: var(--radius-sm);
+  border: var(--border-sm);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+  margin-bottom: 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-wrap: wrap;
+}
+
+.preview-meta-item strong {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+/* Telegram Canvas Preview Stage */
 .preview-stage-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 220px;
-  padding: 2rem 1.5rem;
-  background: var(--bg-input);
+  min-height: 230px;
+  padding: 2.25rem 1.5rem;
+  background: #18202a;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-md);
+  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
   max-width: 100%;
   min-width: 0;
+  transition: min-height 0.2s ease-out;
 }
 
-/* Telegram Simulated Card */
+/* Telegram Simulated Card (Authentic Telegram Chat Preview) */
 .telegram-quote-card {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  max-width: 480px;
+  gap: 0.85rem;
+  max-width: 490px;
   width: 100%;
   min-width: 0;
 }
@@ -56,16 +92,19 @@
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  background: var(--bg-nested);
+  background: #232b36;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
 }
 
 .tg-bubble-col {
   flex: 1;
   background: #1b1e23;
   border-radius: 14px 14px 14px 4px;
-  padding: 0.7rem 0.95rem 0.55rem;
+  padding: 0.75rem 1rem 0.6rem;
   position: relative;
-  transition: background-color var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: background-color var(--transition-tactile);
   min-width: 0;
 }
 
@@ -73,13 +112,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   min-width: 0;
 }
 
 .tg-sender-name {
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: #e07a5f;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -89,12 +128,13 @@
 
 .tg-sender-badge {
   font-size: 0.65rem;
-  font-weight: 500;
-  padding: 0.1rem 0.4rem;
+  font-weight: 700;
+  padding: 0.12rem 0.45rem;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   color: #94a3b8;
   flex-shrink: 0;
+  text-transform: uppercase;
 }
 
 /* Quoted Reply inside Bubble */
@@ -102,10 +142,10 @@
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   border-radius: 6px;
-  padding: 0.35rem 0.55rem;
-  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.55rem;
   min-width: 0;
 }
 
@@ -114,7 +154,7 @@
 }
 
 .tg-reply-line {
-  width: 3px;
+  width: 3.5px;
   border-radius: 2px;
   background: #e07a5f;
   flex-shrink: 0;
@@ -127,27 +167,27 @@
 }
 
 .tg-reply-name {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 700;
   color: #e07a5f;
   line-height: 1.2;
 }
 
 .tg-reply-text {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: #cbd5e1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
 }
 
 /* Media in Bubble */
 .tg-media-box {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
   border-radius: 8px;
   overflow: hidden;
-  max-height: 220px;
+  max-height: 240px;
 }
 
 .tg-media-box.hidden {
@@ -163,11 +203,12 @@
 
 /* Message Text */
 .tg-message-text {
-  font-size: 0.85rem;
-  line-height: 1.45;
-  color: #f1f5f9;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #f8fafc;
   word-break: break-word;
   white-space: pre-wrap;
+  font-weight: 500;
 }
 
 /* Timestamp & Meta */
@@ -176,22 +217,27 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.25rem;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
   color: #94a3b8;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
 .tg-checks {
   color: #38bdf8;
 }
 
-/* Generated Image Result Card */
+/* ==========================================================================
+   GENERATED SERVER RESULT CARD (NEUBRUTAL RESULT)
+   ========================================================================== */
 .generated-box {
-  margin-top: 1.25rem;
-  padding: 1.25rem;
-  background: var(--bg-nested);
-  border: 1px solid var(--border-subtle);
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: var(--border-md);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  animation: neubrutalFadeIn 0.25s ease-out;
 }
 
 .generated-box.hidden {
@@ -202,54 +248,73 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 1.15rem;
+  gap: 0.5rem;
 }
 
 .result-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--accent);
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000000;
+  background: var(--color-accent-green);
+  border: var(--border-sm);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
 }
 
 .result-info {
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 0.78rem;
+  color: var(--text-primary);
   font-family: var(--font-mono);
+  font-weight: 700;
+  background: var(--bg-nested);
+  padding: 0.25rem 0.55rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-xs);
 }
 
 .result-preview-image-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: var(--bg-dark);
+  padding: 1.25rem;
+  background: var(--bg-nested);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
-  margin-bottom: 1rem;
+  border: var(--border-sm);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.25rem;
 }
 
 .rendered-image {
   max-width: 100%;
-  max-height: 380px;
+  max-height: 400px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: var(--radius-xs);
+  border: var(--border-sm);
+  box-shadow: var(--shadow-sm);
+  background: transparent;
 }
 
 .result-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.85rem;
   flex-wrap: wrap;
 }
 
-/* Developer Playground & Code Snippets */
+/* ==========================================================================
+   DEVELOPER PLAYGROUND & CODE DRAWER
+   ========================================================================== */
 .api-playground-box {
-  margin-top: 1.25rem;
-  border: 1px solid var(--border-subtle);
+  margin-top: 1.5rem;
+  border: var(--border-md);
   border-radius: var(--radius-md);
-  background: var(--bg-input);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   min-width: 0;
   max-width: 100%;
@@ -259,83 +324,96 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.85rem;
-  border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-card);
-  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-bottom: var(--border-sm);
+  background: var(--bg-nested);
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 .playground-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .playground-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
 .tab-buttons {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .tab-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.3rem 0.65rem;
+  background: var(--bg-card);
+  border: var(--border-sm);
+  box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.35rem 0.75rem;
   min-height: 36px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-tactile);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .tab-btn:hover {
-  color: var(--text-primary);
+  background: var(--color-primary);
+  color: #000000;
 }
 
 .tab-btn.active {
-  background: rgba(42, 171, 238, 0.1);
-  color: var(--accent);
-  border-color: rgba(42, 171, 238, 0.25);
+  background: var(--color-primary);
+  color: #000000;
+  box-shadow: 2px 2px 0px var(--shadow-color);
+  transform: translate(-1px, -1px);
 }
 
 .copy-snippet-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.65rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
   min-height: 36px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 500;
+  background: var(--bg-card);
+  border: var(--border-sm);
+  border-radius: var(--radius-xs);
+  box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-tactile);
   white-space: nowrap;
 }
 
 .copy-snippet-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
+  background: var(--color-tertiary);
+  color: #ffffff;
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.copy-snippet-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0px var(--shadow-color);
 }
 
 .snippet-viewer {
   padding: 0;
   background: #090c10;
+  border-top: var(--border-sm);
   min-width: 0;
   max-width: 100%;
 }
@@ -343,58 +421,32 @@
 .code-block {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1.6;
-  color: #cbd5e1;
+  color: #e2e8f0;
   white-space: pre;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 220px;
-  padding: 0.85rem 1rem;
+  max-height: 240px;
+  padding: 1rem 1.25rem;
   max-width: 100%;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Informative Live Preview Metadata Strip */
-.preview-meta-strip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.45rem 0.75rem;
-  background: var(--bg-nested);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
-  margin-bottom: 0.75rem;
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  flex-wrap: wrap;
-}
-
-.preview-meta-item strong {
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 @media (max-width: 640px) {
   .preview-stage-container {
-    padding: 1.25rem 0.75rem;
-    min-height: 180px;
+    padding: 1.5rem 0.85rem;
+    min-height: 190px;
   }
   .tg-avatar {
     width: 38px;
     height: 38px;
   }
   .telegram-quote-card {
-    gap: 0.5rem;
+    gap: 0.65rem;
   }
   .tg-bubble-col {
-    padding: 0.6rem 0.75rem 0.5rem;
+    padding: 0.65rem 0.85rem 0.55rem;
   }
   .result-actions .btn-secondary,
   .result-actions .btn-outline {

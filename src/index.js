@@ -13,20 +13,49 @@ import getClientIP from './utils/getClientIp.js';
 
 const app = new Hono();
 
-const defaultTtl = 60 * 60 * 1000;
+const defaultTtl = 60 * 60 * 1000; // 1 hour
 
 const inflight = new Map();
 const cache = cm.createCache({ ttl: defaultTtl });
 
-const queue = fastq.promise(async ({ key, c, body }) => {
+// Rate Limiter: 30 requests per minute per IP to protect public Hugging Face Space
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 30;
+const ipRequestHistory = new Map();
+
+// Periodic cleanup of rate limit history
+setInterval(() => {
+	const now = Date.now();
+	for (const [ip, timestamps] of ipRequestHistory.entries()) {
+		const valid = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+		if (valid.length === 0) {
+			ipRequestHistory.delete(ip);
+		} else {
+			ipRequestHistory.set(ip, valid);
+		}
+	}
+}, 2 * 60 * 1000);
+
+function isRateLimited(ip) {
+	if (!ip) return false;
+	const now = Date.now();
+	let timestamps = ipRequestHistory.get(ip) || [];
+	timestamps = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+	if (timestamps.length >= MAX_REQUESTS_PER_WINDOW) {
+		ipRequestHistory.set(ip, timestamps);
+		return true;
+	}
+	timestamps.push(now);
+	ipRequestHistory.set(ip, timestamps);
+	return false;
+}
+
+// Queue Concurrency 4 with backpressure limit of 8 pending jobs
+const queue = fastq.promise(async ({ key, body }) => {
 	try {
 		const data = await Quote(body);
-
-		const result = c.json(data);
-
-		await cache.set(key, result);
-
-		return result;
+		await cache.set(key, data);
+		return data;
 	} finally {
 		inflight.delete(key);
 	}
@@ -107,52 +136,105 @@ app.get('/', async c => {
 
 app.post('/', async c => {
 	try {
-		if (c.req.header('content-type') !== 'application/json') {
+		const ipClient = getClientIP(c);
+
+		// 1. IP Rate Limiting Guard (protect Hugging Face compute)
+		if (isRateLimited(ipClient)) {
+			return c.json({
+				status: false,
+				message: 'Rate limit exceeded (30 requests/minute). Hugging Face Space capacity protection active.',
+				retryAfter: 60,
+			}, 429, {
+				'Retry-After': '60',
+				'Cache-Control': 'no-store',
+			});
+		}
+
+		// 2. Queue Backpressure Guard (protect against CPU & OOM exhaustion)
+		if (queue.length() > 8) {
+			return c.json({
+				status: false,
+				message: 'Server rendering engine is currently under heavy load. Please retry in 5 seconds.',
+			}, 503, {
+				'Retry-After': '5',
+				'Cache-Control': 'no-store',
+			});
+		}
+
+		if (c.req.header('content-type') && !c.req.header('content-type').includes('application/json')) {
 			return c.json({ status: false, message: 'Content-Type must be application/json' }, 400);
 		}
 
 		const body = await c.req.json();
 
-		// body validation
+		// 3. Body Validation & Resource Protection
 		if (!body.messages) return c.json({ status: false, message: 'messages is required' }, 400);
 		if (!Array.isArray(body.messages)) return c.json({ status: false, message: 'messages must be an array' }, 400);
+		if (body.messages.length === 0) return c.json({ status: false, message: 'messages cannot be empty' }, 400);
+		if (body.messages.length > 8) {
+			return c.json({ status: false, message: 'Exceeded maximum message count (max 8 messages per quote)' }, 400);
+		}
 		if (typeof body.messages[0] !== 'object') {
 			return c.json({ status: false, message: 'messages must be an array of objects' }, 400);
+		}
+
+		// Protect string length to prevent memory bombs
+		for (const msg of body.messages) {
+			if (msg?.text && typeof msg.text === 'string' && msg.text.length > 3000) {
+				return c.json({ status: false, message: 'Message text exceeds 3000 characters limit' }, 400);
+			}
+			if (msg?.from?.photo?.url && typeof msg.from.photo.url === 'string' && msg.from.photo.url.length > 6000000) {
+				return c.json({ status: false, message: 'Avatar image payload exceeds 6MB limit' }, 400);
+			}
+			if (msg?.media?.url && typeof msg.media.url === 'string' && msg.media.url.length > 6000000) {
+				return c.json({ status: false, message: 'Media attachment payload exceeds 6MB limit' }, 400);
+			}
 		}
 
 		const key = Bun.CryptoHasher.hash("sha256", JSON.stringify(body)).toString('hex');
 
 		const cached = await cache.get(key);
 		if (cached !== undefined) {
-			cached.headers.set('X-Cache', 'HIT');
-			return cached instanceof Response ? cached.clone() : cached;
+			return c.json(cached, 200, {
+				'X-Cache': 'HIT',
+				'Cache-Control': 'public, max-age=3600',
+			});
 		}
 
 		if (inflight.has(key)) {
-			const result = await inflight.get(key);
-			result.headers.set('X-Cache', 'HIT');
-			return result instanceof Response ? result.clone() : result;
+			const inflightData = await inflight.get(key);
+			return c.json(inflightData, 200, {
+				'X-Cache': 'HIT',
+				'Cache-Control': 'public, max-age=3600',
+			});
 		}
 
-		const promise = queue.push({ key, c, body });
+		const promise = queue.push({ key, body });
 		inflight.set(key, promise);
 
-		const result = await promise;
+		const resultData = await promise;
 
-		result.headers.set('X-Cache', 'MISS');
-		return result instanceof Response ? result.clone() : result;
+		return c.json(resultData, 200, {
+			'X-Cache': 'MISS',
+			'Cache-Control': 'public, max-age=3600',
+		});
 	} catch (e) {
 		console.error(e);
-		return c.json({ status: false, message: 'Invalid JSON' }, 400);
+		return c.json({ status: false, message: 'Invalid JSON or rendering error' }, 400);
 	}
 });
 
 app.get('/status', c => {
 	const uptime = process.uptime();
+	const mem = process.memoryUsage();
 	return c.json({
 		status: true,
 		message: 'Quote API is running',
 		uptime: new Date(uptime * 1000).toISOString().slice(11, 19),
+		queueWaiting: queue.length(),
+		memoryMb: Math.round(mem.rss / 1024 / 1024),
+	}, 200, {
+		'Cache-Control': 'public, max-age=10',
 	});
 });
 

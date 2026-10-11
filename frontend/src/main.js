@@ -69,8 +69,40 @@ const codeSnippet = document.getElementById('codeSnippet');
 const copySnippetBtn = document.getElementById('copySnippetBtn');
 const tabButtons = document.querySelectorAll('.tab-btn');
 
+// Theme Elements
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIconSun = document.getElementById('themeIconSun');
+const themeIconMoon = document.getElementById('themeIconMoon');
+
 let currentTab = 'curl';
 let currentGeneratedBlob = null;
+let lastGenerateTime = 0;
+
+// Theme Functions
+function initTheme() {
+  const saved = localStorage.getItem('qc_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  setTheme(theme);
+}
+
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if (themeIconSun) themeIconSun.style.display = 'none';
+    if (themeIconMoon) themeIconMoon.style.display = 'block';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    if (themeIconSun) themeIconSun.style.display = 'block';
+    if (themeIconMoon) themeIconMoon.style.display = 'none';
+  }
+  localStorage.setItem('qc_theme', theme);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  setTheme(isDark ? 'light' : 'dark');
+}
 
 // Initialize Timestamp
 function updateTimestamp() {
@@ -335,12 +367,20 @@ async function generateQuote() {
     return;
   }
 
+  // Client-side Cooldown Protection against Spam
+  const now = Date.now();
+  if (now - lastGenerateTime < 1500) {
+    showToast('Tunggu sebentar sebelum mengenerate kembali.', 'info');
+    return;
+  }
+  lastGenerateTime = now;
+
   // Set Loading State
   generateBtn.disabled = true;
   const originalContent = generateBtn.innerHTML;
   generateBtn.innerHTML = `
     <span class="btn-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin">
         <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
         <path d="M12 2a10 10 0 0 1 10 10"></path>
       </svg>
@@ -401,6 +441,12 @@ async function generateQuote() {
     clearTimeout(timeoutTimer);
 
     if (!response || !response.ok) {
+      if (response && response.status === 429) {
+        throw new Error('Batas permintaan (Rate Limit 30 req/min) tercapai untuk mengamankan kuota Hugging Face Space. Harap tunggu sebentar.');
+      }
+      if (response && response.status === 503) {
+        throw new Error('Server rendering sedang sibuk menangani antrean grafis. Coba lagi dalam beberapa detik.');
+      }
       throw new Error(`Server returned HTTP ${response ? response.status : 'offline'}`);
     }
 
@@ -434,7 +480,7 @@ async function generateQuote() {
     showToast('Quote berhasil digenerate!', 'success');
   } catch (err) {
     console.error('Generate Error:', err);
-    showToast(`Gagal: ${err.message}. Backend HF mungkin sedang cold-start (tunggu ~15 detik).`, 'error', 6000);
+    showToast(`Gagal: ${err.message}`, 'error', 6000);
   } finally {
     generateBtn.disabled = false;
     generateBtn.innerHTML = originalContent;
@@ -482,6 +528,11 @@ function copyCodeSnippet() {
 
 // Setup Event Listeners
 function setupEvents() {
+  // Theme Toggle
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+  }
+
   // Real-time input updates
   const inputs = [
     senderNameInput,
@@ -643,6 +694,7 @@ function setupEvents() {
 
 // App Initialization
 function init() {
+  initTheme();
   updateTimestamp();
   updateLivePreview();
   setupEvents();
