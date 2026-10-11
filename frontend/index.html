@@ -11,6 +11,7 @@
     <meta name="keywords" content="telegram quote generator, fake chat maker, quotly api, telegram sticker quote, quote maker web, telegram bot api" />
     <meta name="author" content="Rusdi Ilham" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN" />
     <link rel="canonical" href="https://qc.mangrusdi.my.id/" />
 
     <!-- Open Graph / Facebook -->
@@ -37,7 +38,7 @@
     />
     <meta name="twitter:image" content="https://qc.mangrusdi.my.id/og-image.png" />
 
-    <!-- JSON-LD Structured Data for Google Search Console -->
+    <!-- JSON-LD Structured Data for Google Search Console (App, Org, FAQ, Breadcrumbs) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -61,6 +62,47 @@
             "name": "Rusdi Ilham",
             "url": "https://github.com/RusdiEneri"
           }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://qc.mangrusdi.my.id/#organization",
+          "name": "Hisoka Labs",
+          "url": "https://qc.mangrusdi.my.id/",
+          "logo": "https://qc.mangrusdi.my.id/favicon.png",
+          "sameAs": [
+            "https://github.com/RusdiEneri",
+            "https://github.com/RusdiEneri/quote"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://qc.mangrusdi.my.id/#breadcrumbs",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://qc.mangrusdi.my.id/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Studio Customizer",
+              "item": "https://qc.mangrusdi.my.id/#studio"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "REST API Documentation",
+              "item": "https://qc.mangrusdi.my.id/#api-docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "FAQ",
+              "item": "https://qc.mangrusdi.my.id/#faq"
+            }
+          ]
         },
         {
           "@type": "FAQPage",
@@ -113,6 +155,7 @@
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./src/styles/base.css" />
@@ -169,6 +212,20 @@
           </button>
 
           <a
+            href="https://wa.me/6281234567890?text=Halo%20Mang%20Rusdi%2C%20saya%20tertarik%20dengan%20Quote%20Studio%20API"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="whatsapp-btn"
+            data-track="click_wa"
+            title="Chat Developer via WhatsApp"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.176 8.176 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.21 8.21 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.53c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.12.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+
+          <a
             href="https://github.com/RusdiEneri/quote"
             target="_blank"
             rel="noopener noreferrer"
@@ -189,6 +246,17 @@
           </button>
         </div>
       </header>
+
+      <!-- Breadcrumb Navigation Bar (Point 6) -->
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-sep" aria-hidden="true">/</li>
+          <li class="breadcrumb-item"><a href="#studio">Studio</a></li>
+          <li class="breadcrumb-sep" aria-hidden="true">/</li>
+          <li class="breadcrumb-item current" aria-current="page">Customizer</li>
+        </ol>
+      </nav>
 
       <!-- Mobile View Switcher (Visible on small screens) -->
       <div class="mobile-studio-switcher" role="tablist" aria-label="Studio View Switcher">
@@ -215,10 +283,16 @@
         <section class="panel editor-panel active-mobile-view" id="editorPanel" aria-labelledby="editorHeading">
           <div class="panel-header">
             <h2 id="editorHeading" class="panel-title">Quote Customizer</h2>
-            <button id="resetFormBtn" type="button" class="btn-text" title="Reset form to default values">Reset</button>
+            <button id="resetFormBtn" type="button" class="btn-text" data-track="click_cta_reset" title="Reset form to default values">Reset</button>
           </div>
 
           <form id="quoteForm" class="editor-form" autocomplete="off">
+            <!-- Anti-Spam Honeypot (Point 13) -->
+            <div class="hp-trap" aria-hidden="true">
+              <label for="hpWebsite">Leave this field blank</label>
+              <input type="text" id="hpWebsite" name="hp_website" tabindex="-1" autocomplete="off" />
+            </div>
+
             <!-- Section: Sender Info -->
             <div class="form-section" role="group" aria-labelledby="senderInfoHeading">
               <div class="section-title" id="senderInfoHeading">
@@ -238,6 +312,7 @@
                     name="senderName"
                     class="form-input"
                     value="Mang Rusdi"
+                    maxlength="64"
                     placeholder="e.g. Rusdi Ilham"
                     required
                   />
@@ -250,6 +325,7 @@
                     name="senderTitle"
                     class="form-input"
                     value="Owner"
+                    maxlength="32"
                     placeholder="e.g. Admin"
                   />
                 </div>
@@ -298,12 +374,16 @@
               </div>
 
               <div class="form-group">
-                <label for="messageText">Chat Text <span class="required">*</span></label>
+                <div class="label-row">
+                  <label for="messageText">Chat Text <span class="required">*</span></label>
+                  <span id="charCountBadge" class="char-count-badge">78 / 3000</span>
+                </div>
                 <textarea
                   id="messageText"
                   name="messageText"
                   class="form-textarea"
                   rows="3"
+                  maxlength="3000"
                   placeholder="Type Telegram message..."
                   required
                 >Halo semuanya! Quote API Telegram sekarang sudah live dan siap digunakan 🚀</textarea>
@@ -326,6 +406,7 @@
                     id="replyName"
                     class="form-input"
                     value="Dika Ardnt"
+                    maxlength="64"
                     placeholder="Quoted user name"
                   />
                 </div>
@@ -336,6 +417,7 @@
                     id="replyText"
                     class="form-input"
                     value="Kapan Quote API selesai dideploy?"
+                    maxlength="1000"
                     placeholder="Quoted text preview"
                   />
                 </div>
@@ -411,6 +493,7 @@
                     id="watermark"
                     class="form-input"
                     value="qc.mangrusdi.my.id"
+                    maxlength="64"
                     placeholder="Watermark text"
                   />
                 </div>
@@ -430,7 +513,7 @@
 
             <!-- Generate Action Button -->
             <div class="form-actions">
-              <button id="generateBtn" type="button" class="btn-primary">
+              <button id="generateBtn" type="button" class="btn-primary" data-track="click_cta_generate">
                 <span class="btn-icon">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -514,7 +597,7 @@
             </div>
 
             <div class="result-actions">
-              <a id="downloadBtn" href="#" download="telegram-quote.png" class="btn-secondary">
+              <a id="downloadBtn" href="#" download="telegram-quote.png" class="btn-secondary" data-track="click_cta_download">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
@@ -522,7 +605,7 @@
                 </svg>
                 Download Image
               </a>
-              <button id="copyImageBtn" type="button" class="btn-outline">
+              <button id="copyImageBtn" type="button" class="btn-outline" data-track="click_cta_copy_image">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -542,7 +625,7 @@
                   <button type="button" class="tab-btn" data-tab="js">JavaScript</button>
                   <button type="button" class="tab-btn" data-tab="py">Python</button>
                 </div>
-                <button id="copySnippetBtn" type="button" class="copy-snippet-btn" title="Copy code snippet">
+                <button id="copySnippetBtn" type="button" class="copy-snippet-btn" data-track="click_cta_copy_snippet" title="Copy code snippet">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -831,6 +914,7 @@
             <a href="#api-docs" class="footer-link">Documentation</a>
             <a href="#specs" class="footer-link">Layout Formats</a>
             <a href="#faq" class="footer-link">FAQ</a>
+            <a href="https://wa.me/6281234567890?text=Halo%20Mang%20Rusdi%2C%20saya%20tertarik%20dengan%20Quote%20Studio%20API" target="_blank" rel="noopener noreferrer" class="footer-link" data-track="click_wa">WhatsApp</a>
             <a href="https://github.com/RusdiEneri/quote" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
             <a href="https://huggingface.co/spaces/ilhamdev/quote-api" target="_blank" rel="noopener noreferrer" class="footer-link">Hugging Face Space</a>
           </div>

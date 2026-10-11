@@ -976,3 +976,123 @@
     gap: 0.65rem;
   }
 }
+
+/* ==========================================================================
+   CHECKLIST ENHANCEMENTS: Breadcrumbs, WhatsApp, Validations & Anti-Spam
+   ========================================================================== */
+
+/* Breadcrumb Navigation Bar */
+.breadcrumb-nav {
+  margin-bottom: 1.25rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--bg-card);
+  border: var(--border-sm);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-item a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition-tactile);
+}
+
+.breadcrumb-item a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.breadcrumb-sep {
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+.breadcrumb-item.current {
+  color: var(--text-muted);
+}
+
+/* Character Counter & Form Label Row */
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.char-count-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-body);
+  color: var(--text-muted);
+  transition: all var(--transition-tactile);
+}
+
+.char-count-badge.limit-warning {
+  background: var(--color-primary);
+  color: #000000;
+}
+
+.char-count-badge.limit-danger {
+  background: var(--color-secondary);
+  color: #ffffff;
+}
+
+/* WhatsApp CTA Button */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #000000;
+  text-decoration: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: var(--border-sm);
+  box-shadow: var(--shadow-sm);
+  background: #25D366;
+  min-height: 40px;
+  transition: all var(--transition-tactile);
+}
+
+.whatsapp-btn:hover {
+  background: #20BA5A;
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+  color: #000000;
+}
+
+.whatsapp-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--shadow-color);
+}
+
+/* Anti-Spam Honeypot Trap */
+.hp-trap {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}

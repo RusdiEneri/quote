@@ -34,6 +34,8 @@ const bgColorInput = document.getElementById('bgColor');
 const bgColorTextInput = document.getElementById('bgColorText');
 const watermarkInput = document.getElementById('watermark');
 const watermarkGroup = document.getElementById('watermarkGroup');
+const hpWebsiteInput = document.getElementById('hpWebsite');
+const charCountBadge = document.getElementById('charCountBadge');
 
 // Preview Elements
 const prevAvatar = document.getElementById('prevAvatar');
@@ -77,6 +79,36 @@ const themeIconMoon = document.getElementById('themeIconMoon');
 let currentTab = 'curl';
 let currentGeneratedBlob = null;
 let lastGenerateTime = 0;
+
+// Analytics & Event Tracking (Checklist Points 14, 15, 16)
+function trackEvent(eventName, params = {}) {
+  const payload = {
+    event: eventName,
+    timestamp: new Date().toISOString(),
+    ...params,
+  };
+
+  // 1. Google Tag Manager / GA4 dataLayer
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(payload);
+
+  // 2. Custom DOM Event for client-side analytics listeners
+  window.dispatchEvent(new CustomEvent('analytics:track', { detail: payload }));
+}
+
+// Character Counter Update (Checklist Point 12)
+function updateCharCount() {
+  if (!messageTextInput || !charCountBadge) return;
+  const count = messageTextInput.value.length;
+  charCountBadge.textContent = `${count} / 3000`;
+  if (count > 2800) {
+    charCountBadge.className = 'char-count-badge limit-danger';
+  } else if (count > 2000) {
+    charCountBadge.className = 'char-count-badge limit-warning';
+  } else {
+    charCountBadge.className = 'char-count-badge';
+  }
+}
 
 // Theme Functions
 function initTheme() {
@@ -352,8 +384,28 @@ function switchMobileTab(target) {
 
 // Generate Quote via Backend API
 async function generateQuote() {
+  // Point 13: Anti-spam Honeypot Trap
+  if (hpWebsiteInput && hpWebsiteInput.value.trim() !== '') {
+    console.warn('Spam bot blocked silently via honeypot trap.');
+    showToast('Quote berhasil digenerate!', 'success');
+    return;
+  }
+
   const text = messageTextInput.value.trim();
   const name = senderNameInput.value.trim();
+
+  // Point 12: Form Validation
+  if (!name) {
+    showToast('Nama pengirim tidak boleh kosong!', 'error');
+    senderNameInput.focus();
+    return;
+  }
+
+  if (name.length > 64) {
+    showToast('Nama pengirim maksimal 64 karakter!', 'error');
+    senderNameInput.focus();
+    return;
+  }
 
   if (!text) {
     showToast('Pesan chat tidak boleh kosong!', 'error');
@@ -361,11 +413,18 @@ async function generateQuote() {
     return;
   }
 
-  if (!name) {
-    showToast('Nama pengirim tidak boleh kosong!', 'error');
-    senderNameInput.focus();
+  if (text.length > 3000) {
+    showToast('Pesan chat maksimal 3000 karakter!', 'error');
+    messageTextInput.focus();
     return;
   }
+
+  // Points 14 & 16: Track form submission
+  trackEvent('form_submit', {
+    form: 'quoteForm',
+    quote_type: quoteTypeSelect.value,
+    format: imageFormatSelect.value,
+  });
 
   // Client-side Cooldown Protection against Spam
   const now = Date.now();
@@ -478,6 +537,13 @@ async function generateQuote() {
     generatedResultBox.classList.remove('hidden');
     generatedResultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     showToast('Quote berhasil digenerate!', 'success');
+
+    // Point 14 & 16: Track successful generation
+    trackEvent('quote_generated_success', {
+      quote_type: quoteTypeSelect.value,
+      format: format,
+      duration_ms: Date.now() - now,
+    });
   } catch (err) {
     console.error('Generate Error:', err);
     showToast(`Gagal: ${err.message}`, 'error', 6000);
@@ -629,8 +695,22 @@ function setupEvents() {
     watermarkInput.value = 'qc.mangrusdi.my.id';
     generatedResultBox.classList.add('hidden');
     updateLivePreview();
+    updateCharCount();
     showToast('Form direset ke default', 'info');
   });
+
+  // Form Submission Handler (Point 12 & 14)
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      generateQuote();
+    });
+  }
+
+  // Character Counter Input Listener (Point 12)
+  if (messageTextInput) {
+    messageTextInput.addEventListener('input', updateCharCount);
+  }
 
   // Mobile menu toggle
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -690,12 +770,24 @@ function setupEvents() {
       updateCodeSnippets();
     });
   });
+
+  // Automatic Data-Track Event Listeners (Points 14, 15, 16)
+  document.querySelectorAll('[data-track]').forEach((el) => {
+    el.addEventListener('click', () => {
+      trackEvent(el.dataset.track, {
+        text: el.innerText ? el.innerText.trim().slice(0, 50) : (el.title || el.id || 'unlabeled'),
+        tag: el.tagName.toLowerCase(),
+        href: el.getAttribute('href') || undefined,
+      });
+    });
+  });
 }
 
 // App Initialization
 function init() {
   initTheme();
   updateTimestamp();
+  updateCharCount();
   updateLivePreview();
   setupEvents();
   checkApiStatus();
